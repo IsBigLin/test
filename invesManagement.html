@@ -1,0 +1,378 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>蒲公英金融工作室管理中台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="vendor/css/bootstrap.css"/>
+    <link rel="stylesheet" href="vendor/css/jquery.pagination.css">
+    <link rel="stylesheet" href="vendor/css/daterangepicker-bs3.css"/>
+    <link rel="stylesheet" href="vendor/css/toastr.css"><!--二级提示框样式-->
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/main.css"/><!--在这里设置所有弹出框的样式-->
+    <link rel="stylesheet" href="css/invesManagement.css">
+</head>
+<body>
+    <!--container-->
+    <div id="mainContainer" class="container">
+
+        <div id="mainView">
+
+            <div class="page-inves-management">
+
+                <!--<div class="header">
+                    <div class="square"><i class="iconfont">&#xe618;</i></div>
+                    <div class="head-content">投顾列表</div>
+                </div>-->
+
+                <div class="pagecontent">
+
+                    <div class="page-nav">
+
+                        <!--在职投顾和限职人员公用头部-->
+                        <ul class="nav nav-tabs">
+                            <li class="active btn-service-gratev"><a href="#">在职投顾</a></li>
+                            <li class="btn-limit-fans"><a href="#">限制人员</a></li>
+                        </ul>
+
+                        <!--在职投顾导航栏搜索框-->
+                        <div class="serving-gratev-list">
+                            <div class="page-btn-group">
+                                <div class="col-lg-6 search-button">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="输入昵称和账号" autofocus>
+                                 <span class="input-group-btn">
+                                     <button class="btn btn-default btn-search" type="button" button-rights="213">
+                                         <i class="iconfont" button-rights="202">&#xe615;</i>
+                                     </button>
+                                 </span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-success" data-toggle="modal" onclick="getBranchName(1)" button-rights="204">筛选</button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" button-rights="201" >限制</button>
+                            </div>
+                        </div>
+
+                        <!--限制人员导航栏搜索框-->
+                        <div class="limit-fans-list">
+                            <div class="page-btn-group">
+                                <div class="col-lg-6 search-button">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="输入昵称和账号" autofocus>
+                                 <span class="input-group-btn">
+                                     <button class="btn btn-default btn-search" type="button" button-rights="213">
+                                         <i class="iconfont" button-rights="202">&#xe615;</i>
+                                     </button>
+                                 </span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-success" data-toggle="modal" onclick="getBranchName()" button-rights="204">筛选</button>
+                                <button type="button" class="btn btn-primary" button-rights="201">激活</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!--在职投顾-->
+                    <div class="serving-gratev-list investList">
+                        <div class="table-list">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th><input class="selectInvestAll" type="checkbox"></th>
+                                    <th>投顾昵称</th>
+                                    <th>手机号</th>
+                                    <th>微信公众号</th>
+                                    <th>归属</th>
+                                    <th>开通时间</th>
+                                    <th>查看详情</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <p class="servingtTips listtips tips">该列表目前没有数据~~</p>
+                        </div>
+                        <div class="page-num">
+                            <div id="pageInvest" class="m-pagination"></div>
+                            <div id="eventLog2"></div>
+                        </div>
+                    </div>
+
+                    <!--限制人员-->
+                    <div class="limit-fans-list investList">
+                        <div class="table-list">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th><input class="selectLimitsAll" type="checkbox"></th>
+                                    <th>投顾昵称</th>
+                                    <th>手机号</th>
+                                    <th>微信公众号</th>
+                                    <th>归属</th>
+                                    <th>解禁日期</th>
+                                    <th>查看详情</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <p class="limitTips listtips tips">该列表目前没有数据~~</p>
+                        </div>
+                        <div class="page-num">
+                            <div id="pageLimitInvest" class="m-pagination"></div>
+                            <div id="eventLog"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--投顾审核选择限制方式模态框-->
+                <div class="modal fade inves-manage-pop" id="invesManageLimit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                    <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">选择限制方式</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label  class="control-label">限制条件：</label>
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="investLimitType" id="optionsRadios9"
+                                                   value="1" checked> 时效限制
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="radio" name="investLimitType" id="optionsRadios10"
+                                                   value="2">永久限制
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="control-label">限制日期：</label>
+                                        <div class="input-prepend input-group">
+                                    <span class="add-on input-group-addon">
+                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                    </span>
+                                            <input type="text" readonly="readonly"  name="limitInvestTime" id="limitInvestTime" class="form-control datepicker" value="2016-8-21 - 2016-8-22" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-success">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//投顾审核选择限制方式模态框-->
+
+                <!--投顾审核设置筛选条件模态框-->
+                <div class="modal fade inves-manage-pop invesManageDemand" id="invesManageDemand" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                    <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">筛选</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-success" onclick="getListByBranchName(0)">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//投顾审核设置筛选条件模态框-->
+
+                <!--限制投顾审核设置筛选条件模态框-->
+                <div class="modal fade inves-manage-pop invesManageDemand" id="invesManageDemandLimit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                    <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">筛选</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-success" onclick="getListByBranchName(1)">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//限制投顾审核设置筛选条件模态框-->
+
+                <!--投顾列表查看详情模态框-->
+                <div class="modal fade bs-example-modal-lg inves-manage-pop" id="invesManageInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">查看详情</h4>
+                            </div>
+                            <div class="modal-body">
+                                <!--基本信息-->
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>基本信息</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr><td></td><td></td></tr>
+                                    </tbody>
+                                </table>
+                                <!--业务信息-->
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>业务信息</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr><td></td><td></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//投顾列表查看详情模态框-->
+
+                <!--确认是否执行此操作提示模态框-->
+                <div class="modal fade openTipsModel-pop" id="openTipsModelForbid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                    <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">操作提示</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p><span class="glyphicon glyphicon-ok"></span>
+                                    <span class="tips">确认要执行此操作吗？</span>
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-success">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--<footer>
+            <hr>
+            <p>&copy;2016 杭州云纪网络科技有限公司. All rights reserved.</p>
+        </footer>-->
+
+    </div>
+
+    <script id="inves-manage-memand" type="text/x-handlebars-template">
+        <label  class="control-label">归属：</label>
+        {{#each this}}
+        <label class="checkbox-inline">
+            <input type="checkbox" name="radiosBranchName" class="branch-list"
+                   value="{{branch_no}}" data-branch-no="{{branch_no}}"> {{branch_name}}
+        </label>
+        {{/each}}
+    </script>
+
+    <!--在职投顾-->
+    <script id="invest-list" type="text/x-handlebars-template">
+        {{#each this}}
+        <tr>
+            <td><input class="limitBrokerId" type="checkbox" name="radiosBrokerID" data-broker-id="{{broker_id}}" data-tenant-id="{{tenant_id}}"></td>
+            <td class="table-forbid" title="{{broker_name}}">{{broker_name}}</td>
+            <td>{{mobile}}</td>
+            <td class="table-forbid" title="{{wx_public_account}}">{{wx_public_account}}</td>
+            <td>{{branch_name}}</td>
+            <td>{{#formateDate create_date}}{{/formateDate}}</td>
+            <td class = "getInvestDetail" title="点击查看详情" data-toggle="modal" data-broker-id="{{broker_id}}" data-tenant-id="{{tenant_id}}"  button-rights="203">
+                <span class="rectangle rectangle-green"></span>
+                <span class="iconfont operate">&#xe61a;</span>
+            </td>
+        </tr>
+        {{/each}}
+    </script>
+
+    <!--限制投顾-->
+    <script id="limit_invest-list" type="text/x-handlebars-template">
+        {{#each this}}
+        <tr>
+            <td><input class="limitBrokerId" type="checkbox" name="radiosBrokerID" data-broker-id="{{broker_id}}" data-tenant-id="{{tenant_id}}"></td>
+            <td class="table-forbid" title="{{broker_name}}">{{broker_name}}</td>
+            <td>{{mobile}}</td>
+            <td class="table-forbid" title="{{wx_public_account}}">{{wx_public_account}}</td>
+            <td>{{branch_name}}</td>
+            <td>{{frozen_date}}</td>
+            <td class = "getInvestDetail" title="点击查看详情" data-toggle="modal" data-broker-id="{{broker_id}}" data-tenant-id="{{tenant_id}}"  button-rights="203">
+                <span class="rectangle rectangle-green"></span>
+                <i class="iconfont operate">&#xe61a;</i>
+            </td>
+        </tr>
+        {{/each}}
+    </script>
+
+    <script id="invest-base-details" type="text/x-handlebars-template">
+        <tr>
+            <td>投顾昵称：{{broker_name}}</td>
+            <td>手机号码：{{mobile}}</td>
+        </tr>
+        <tr>
+            <td>资格证书种类：{{certificate_type}}</td>
+            <td>资格证书号：{{certificate_id}}</td>
+        </tr>
+        <tr>
+            <td>微信号：{{wx_public_account}}</td>
+            <td>微信公众号主体：{{wx_account}}</td>
+        </tr>
+        <tr>
+            <td>机构营业证书：{{parent_branch_name}}</td>
+            <td>归属：{{branch_name}}</td>
+        </tr>
+        <tr><td></td><td></td></tr>
+    </script>
+    <script id="invest-business-details" type="text/x-handlebars-template">
+        <tr>
+            <td>评论：{{reply_total}} 次</td>
+            <td>擅长领域：{{speciality}}</td>
+        </tr>
+        <tr>
+            <td>发布观点：{{viewpoint_total}} 次</td>
+            <td>被点赞次数：{{upvote_total}} 次</td>
+        </tr>
+        <tr><td></td><td></td></tr>
+    </script>
+
+</body>
+<!-- Scripts -->
+<script src="vendor/js/jquery.min.js"></script>
+<script src="vendor/js/mricode.pagination.js"></script>
+<script src="vendor/js/jquery.dropotron.min.js"></script>
+<script src="vendor/js/bootstrap.min.js"></script>
+<script src="vendor/js/moment.js"></script>
+<script src="vendor/js/daterangepicker.js"></script>
+<script src="vendor/js/toastr.js"></script><!--二级提示框控制-->
+<script src="vendor/js/handlebars-v4.0.5.js"></script>
+<script src="js/common/tools.js"></script>
+<script src="js/common/config.js"></script>
+<script src="js/invesManagement.js"></script>
+</html>
